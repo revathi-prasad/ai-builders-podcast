@@ -1,0 +1,51 @@
+# Audio files (if they're large and you want to exclude them)
+*.mp3
+*.wav
+
+# Generated files
+audio-files/
+episodes/
+
+# Python specific
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environment
+venv/
+ENV/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# API keys and secrets (important for security!)
+*.env
+*config.py
+# If you have a config file with API keys, consider using environment variables instead
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+*.log
