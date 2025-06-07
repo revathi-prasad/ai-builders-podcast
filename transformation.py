@@ -191,7 +191,7 @@ Transform each segment keeping the original speaker, but adapting the content ap
             # Call Claude for transformation
             response = self.claude_client.messages.create(
                 model=model,
-                max_tokens=9000,  # Increased from default to handle longer content
+                max_tokens=12000,  # Increased from default to handle longer content
                 temperature=0.7,
                 messages=[{"role": "user", "content": prompt}]
             )
@@ -394,7 +394,7 @@ Transform each segment keeping the original speaker, but adapting the content ap
             logging.info(f"Calling Claude API to transform content...")
             response = self.claude_client.messages.create(
                 model=model,
-                max_tokens=9000,
+                max_tokens=12000,
                 temperature=0.7,
                 messages=[{"role": "user", "content": prompt}]
             )
@@ -686,7 +686,7 @@ Remember this is not a direct translation but a cultural adaptation. The goal is
                 # Call Claude for transformation
                 response = self.claude_client.messages.create(
                     model=model,
-                    max_tokens=9000,
+                    max_tokens=12000,
                     temperature=0.7,
                     messages=[{"role": "user", "content": prompt}]
                 )
