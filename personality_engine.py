@@ -243,9 +243,13 @@ Create a natural, flowing conversation between {host1.capitalize()} and {host2.c
 6. AVOID repetitive introductions - hosts should NOT introduce themselves again after the standard intro
 7. Include occasional short responses (agreement, questions) to create natural dialogue
 8. Use appropriate terminology and cultural references for the {language.value} context
-9. Format each turn as "{host1.capitalize()}: [dialogue]" or "{host2.capitalize()}: [dialogue]"
-10. Incorporate region-specific examples to explain complex AI concepts
-11. If using research data, integrate it naturally without making the conversation feel academic
+9. CASUAL CONVERSATION: Two friends passionately discussing AI over coffee/chai/tea
+10. NATURAL REACTIONS: Include "Wow!", "Cool!", "हाँ यार!", "சூப்பர்!" type responses  
+11. REAL EXAMPLES: Local, relatable examples people connect with
+12. AVOID: News anchor tone, formal presentation style, academic language
+13. Format each turn as "{host1.capitalize()}: [dialogue]" or "{host2.capitalize()}: [dialogue]"
+14. Incorporate region-specific examples to explain complex AI concepts
+15. If using research data, integrate it naturally without making the conversation feel academic
 
 Generate exactly {segment_count} segments of dialogue, alternating between hosts.
 """
@@ -259,7 +263,7 @@ Generate exactly {segment_count} segments of dialogue, alternating between hosts
         try:
             response = self.claude_client.messages.create(
                 model=model,
-                max_tokens=4000,  # Increase for longer conversations
+                max_tokens=8000,  # Increase for longer conversations
                 temperature=0.7,
                 messages=[{"role": "user", "content": prompt}]
             )
@@ -536,6 +540,21 @@ Generate exactly {segment_count} segments of dialogue, alternating between hosts
             guidelines = ConstellationConfig.TRANSFORMATION_GUIDELINES[language.value]
             
             principles = "\n".join([f"- {p}" for p in guidelines["principles"]])
+
+            casual_emphasis = ""
+        if language.value == "hindi":
+            casual_emphasis = """
+### 🎯 CASUAL HINDI CONVERSATION:
+- "अरे यार", "सुनो", "देखो", "बात ये है" जैसे natural words use करें
+- Bollywood references, daily life examples दें
+- न्यूज़ चैनल style बिल्कुल न करें"""
+        
+        elif language.value == "tamil":
+            casual_emphasis = """
+### 🎯 CASUAL TAMIL CONVERSATION:
+- "அதான்", "பாருங்க", "கேளுங்க" மாதிரி natural words use பண்ணுங்க
+- Cinema references, daily life examples கொடுங்க  
+- News reader style பண்ணாதீங்க"""
             
             return f"""
             ## Language Guidelines for {language.value}

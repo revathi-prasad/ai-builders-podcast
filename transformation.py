@@ -147,9 +147,41 @@ Use concepts, examples, and flow from this reference material where appropriate 
         
         # Create the prompt for Claude
         model = ConstellationConfig.CLAUDE_MODELS[cost_tier]
+
+        # Add casual conversation guidelines
+        casual_guidelines = ""
+        if target_language.value == "hindi":
+            casual_guidelines = """
+        🇮🇳 **HINDI CASUAL CONVERSATION STYLE:**
+        - बोलचाल की हिंदी का इस्तेमाल करें - जैसे chai पर दोस्तों से बात करते हैं
+        - कठिन संस्कृत शब्दों से बचें, आसान रोज़ाना के शब्द इस्तेमाल करें  
+        - न्यूज़ चैनल की भाषा बिल्कुल न करें - YouTube vlog की तरह बोलें
+        - "ये तो मज़ेदार है!" जैसे expressions use करें
+        - Bollywood, daily life के examples दें
+        - natural sound करना चाहिए
+        """
+        elif target_language.value == "tamil":
+            casual_guidelines = """
+        🇮🇳 **TAMIL CASUAL CONVERSATION STYLE:**
+        - சாதாரண பேச்சு தமிழ் - filter coffee அடிக்கும்போது நண்பர்களிடம் பேசுவது போல
+        - Literary words வேண்டாம் - daily use பண்ற words பயன்படுத்துங்க
+        - News reader மாதிரி பேசாதீங்க - casual podcast மாதிரி பேசுங்க
+        - Cinema, அன்றாட வாழ்க்கை examples கொடுங்க
+        - natural-ஆ கேக்கணும்
+        """
+
+        # Get casual replacements
+        casual_replacements = ""
+        if "casual_replacements" in guidelines:
+            casual_replacements = "\n### ❌ Avoid → ✅ Use Instead:\n"
+            for formal, casual in guidelines["casual_replacements"].items():
+                casual_replacements += f"❌ {formal} → ✅ {casual}\n"
         
         prompt = f"""
 # Content Transformation Task
+
+PRIMARY GOAL: Make this sound like friends chatting casually!
+{casual_guidelines}
 
 ## Original Content ({source_language.value})
 Topic: {topic}
@@ -161,6 +193,8 @@ Style: {guidelines["style"]}
 
 ### Principles:
 {principles}
+
+{casual_replacements}
 
 ### Terminology Mapping:
 | English Term | {target_language.value} Term |
@@ -177,21 +211,27 @@ Style: {guidelines["style"]}
 2. Maintain the speaker turns and overall flow of the conversation.
 3. Adapt examples and references to be culturally relevant to {target_language.value} speakers.
 4. Use the specified terminology for technical terms.
-5. Format your output as:
+5. CONVERSATIONAL TONE: Sound like two friends excitedly discussing AI over coffee/chai/tea
+6. MODERN LANGUAGE: Use words people actually say in real life - like YouTube vlogs or WhatsApp voice messages
+7. CULTURAL REFERENCES: Include local examples, movies, daily life that people relate to
+8. SHORT & NATURAL: Keep sentences flowing and natural - don't worry about perfect grammar
+9. REAL SPEECH: Use expressions people actually say, not formal written language
+10. Format your output as:
    SPEAKER: Transformed text
 
 Remember this is not a direct translation but a cultural adaptation. The goal is to convey the same information and insights in a way that feels natural and relevant to {target_language.value} speakers.
 
 ## Output Format
-Transform each segment keeping the original speaker, but adapting the content appropriately for {target_language.value} speakers:
+Transform each segment keeping the casual, friendly conversation style, but adapting the content appropriately for {target_language.value} speakers:
 
+Remember: This should sound like a fun conversation between 2 intelligent AI-Hosts passionate about the purpose of this podcast and the impact of AI, NOT a news report or textbook!
 """
         
         try:
             # Call Claude for transformation
             response = self.claude_client.messages.create(
                 model=model,
-                max_tokens=12000,  # Increased from default to handle longer content
+                max_tokens=16000,  # Increased from default to handle longer content
                 temperature=0.7,
                 messages=[{"role": "user", "content": prompt}]
             )
@@ -394,7 +434,7 @@ Transform each segment keeping the original speaker, but adapting the content ap
             logging.info(f"Calling Claude API to transform content...")
             response = self.claude_client.messages.create(
                 model=model,
-                max_tokens=12000,
+                max_tokens=16000,
                 temperature=0.7,
                 messages=[{"role": "user", "content": prompt}]
             )
@@ -686,7 +726,7 @@ Remember this is not a direct translation but a cultural adaptation. The goal is
                 # Call Claude for transformation
                 response = self.claude_client.messages.create(
                     model=model,
-                    max_tokens=12000,
+                    max_tokens=16000,
                     temperature=0.7,
                     messages=[{"role": "user", "content": prompt}]
                 )
