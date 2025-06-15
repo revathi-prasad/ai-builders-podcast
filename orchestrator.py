@@ -20,7 +20,9 @@ from cache import IntelligentCache
 from personality_engine import CulturalPersonalityEngine
 from audio_pipeline import AudioProductionPipeline
 from research_engine import ResearchEngine
-from transformation import TransformationEngine
+# from transformation import TransformationEngine
+from transformation import EnhancedTransformationEngine
+
 
 class ConstellationOrchestrator:
     """Main orchestrator for the AI Builders Podcast System
@@ -32,7 +34,7 @@ class ConstellationOrchestrator:
         personality_engine: Instance of CulturalPersonalityEngine
         audio_pipeline: Instance of AudioProductionPipeline
         research_engine: Instance of ResearchEngine
-        transformation_engine: Instance of TransformationEngine
+        transformation_engine: Instance of EnhancedTransformationEngine
         cost_tracker: Dictionary tracking costs
     """
     
@@ -42,7 +44,7 @@ class ConstellationOrchestrator:
         self.personality_engine = CulturalPersonalityEngine(self.cache)
         self.audio_pipeline = AudioProductionPipeline(self.cache)
         self.research_engine = ResearchEngine(self.cache)
-        self.transformation_engine = TransformationEngine(self.cache)
+        self.transformation_engine = EnhancedTransformationEngine(self.cache)
         self.cost_tracker = {"claude": 0.0, "elevenlabs": 0.0, "total": 0.0}
     
     def generate_episode(self, context: EpisodeContext) -> EpisodeResult:
