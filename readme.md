@@ -2,7 +2,7 @@
 
 A comprehensive podcast generation system that creates multilingual, culturally-adapted AI host conversations with a focus on real building over theory.
 
-Spotify Links: 
+Spotify Links to the Podcast: 
 1. **English:** https://open.spotify.com/show/5EL3E8QlPYtp5R7Nm351Tv?si=a21157be054e49f1
 2. **Hindi:** https://open.spotify.com/show/1pPhCIW4pbH9xQXtAvhPSD?si=8ac098fafcd54d37
 3. **Tamil:** https://open.spotify.com/show/52q6VK5e7Yocu9J6O2wWHP?si=1fa2bd1cc743405c
