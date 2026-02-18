@@ -1,4 +1,138 @@
-anthropic>=0.5.0
-pydub>=0.25.1
-requests>=2.28.0
-python-dotenv>=0.20.0
+# AI Podcast Generator v2 - Multi-Agent System Dependencies
+# Install with: pip install -r requirements.txt
+
+# ============================================================================
+# CORE FRAMEWORK
+# ============================================================================
+
+# LangGraph for multi-agent orchestration
+langgraph>=0.2.0
+langchain>=0.3.0
+langchain-anthropic>=0.2.0
+langsmith>=0.1.0  # Observability (free tier)
+
+# ============================================================================
+# KNOWLEDGE GRAPH
+# ============================================================================
+
+# Kuzu - embedded graph database (MIT license)
+kuzu>=0.6.0
+
+# ============================================================================
+# LLM PROVIDERS
+# ============================================================================
+
+# Anthropic (Claude)
+anthropic>=0.39.0
+
+# OpenAI (fallback, embeddings)
+openai>=1.50.0
+
+# ============================================================================
+# DOCUMENT PROCESSING
+# ============================================================================
+
+# PDF extraction (best for LLM-ready output)
+pymupdf4llm>=0.0.17
+pymupdf>=1.24.0
+
+# Word documents
+python-docx>=1.1.0
+
+# Web article extraction
+trafilatura>=1.12.0
+
+# HTML parsing
+beautifulsoup4>=4.12.0
+lxml>=5.0.0
+
+# ============================================================================
+# AUDIO PROCESSING
+# ============================================================================
+
+# Speech-to-text (4x faster than OpenAI Whisper)
+faster-whisper>=1.0.0
+
+# Audio manipulation
+ffmpeg-python>=0.2.0
+soundfile>=0.12.0
+
+# TTS - VibeVoice (installed separately, requires GPU)
+# See: https://github.com/microsoft/VibeVoice
+
+# ============================================================================
+# WEB SEARCH & RESEARCH
+# ============================================================================
+
+# Serper (Google search API - 2500 free/month)
+# API key required: SERPER_API_KEY
+
+# HTTP client
+httpx>=0.27.0
+aiohttp>=3.10.0
+
+# ============================================================================
+# API & WEB FRAMEWORK
+# ============================================================================
+
+# FastAPI for backend
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+python-multipart>=0.0.9  # File uploads
+
+# CORS for React frontend
+# (included in FastAPI)
+
+# ============================================================================
+# DATA & UTILITIES
+# ============================================================================
+
+# Data handling
+pydantic>=2.9.0
+python-dotenv>=1.0.0
+
+# Async utilities
+asyncio-throttle>=1.0.2
+
+# Date/time handling
+python-dateutil>=2.9.0
+
+# ============================================================================
+# TESTING & DEVELOPMENT
+# ============================================================================
+
+pytest>=8.0.0
+pytest-asyncio>=0.24.0
+pytest-cov>=5.0.0
+
+# Type checking
+mypy>=1.11.0
+
+# Linting
+ruff>=0.6.0
+
+# SQLite async (persistence layer)
+aiosqlite>=0.20.0
+
+# TTS fallback
+gtts>=2.5.0
+pydub>=0.25.0
+
+# ============================================================================
+# OPTIONAL: RL TRAINING (requires GPU or Apple Silicon)
+# ============================================================================
+
+# Uncomment to enable real RL training:
+# transformers>=4.45.0
+# torch>=2.4.0
+# accelerate>=0.34.0
+# trl>=0.12.0
+# peft>=0.13.0
+# datasets>=3.0.0
+
+# ============================================================================
+# OPTIONAL: ELEVENLABS (Premium TTS)
+# ============================================================================
+
+# Uncomment if using ElevenLabs:
+# elevenlabs>=1.10.0

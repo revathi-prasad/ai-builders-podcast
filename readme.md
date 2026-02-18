@@ -1,189 +1,153 @@
-# AI Builders Podcast System
+# AI Podcast Generator
 
-A comprehensive podcast generation system that creates multilingual, culturally-adapted AI host conversations with a focus on real building over theory.
+> A multi-agent system for generating culturally-adapted podcasts from multi-modal inputs
+> **Status:** v2 pipeline implemented, research experiments in progress
 
-## Core Features
+## Overview
 
-- **Multilingual Content**: Generate content in English, Hindi, and Tamil with cultural adaptation (not just translation)
-- **Research Integration**: Web research and citation support to create well-informed content
-- **Cultural Adaptation**: Region-specific examples, analogies, and perspectives
-- **AI Personality Engine**: Distinct AI host personalities maintained across episodes
-- **Audio Production Pipeline**: Voice synthesis with ElevenLabs, batch processing, and music integration
-- **Intelligent Caching**: Reduce costs by caching API responses and audio files
+Transforms documents, audio, video, URLs, and topics into podcast scripts and audio using a LangGraph multi-agent pipeline with Knowledge Graph memory, two-layer verification, and reinforcement learning capabilities.
 
-## System Architecture
+### Architecture
 
-The system follows a modular design with the following components:
-
-1. **Configuration (config.py)**
-   - Centralized system settings and language-specific configurations
-
-2. **Data Models (models.py)**
-   - Structured data types for episodes, research, and transformations
-
-3. **Intelligent Cache (cache.py)**
-   - SQLite-based caching system for API responses and audio files
-
-4. **Research Engine (research_engine.py)**
-   - Web search integration and research synthesis
-
-5. **Personality Engine (personality_engine.py)**
-   - Culturally-adapted AI host personality and conversation generation
-
-6. **Transformation Engine (transformation.py)**
-   - Content adaptation between languages with cultural context
-
-7. **Audio Pipeline (audio_pipeline.py)**
-   - Voice synthesis and audio processing
-
-8. **Main Orchestrator (orchestrator.py)**
-   - Coordinates all components for episode generation
-
-9. **Command-line Interface (main.py)**
-   - User-friendly command-line interface for podcast generation
-
-## Getting Started
-
-### Prerequisites
-
-- Python 3.8+
-- [Claude API Key](https://www.anthropic.com/)
-- [ElevenLabs API Key](https://elevenlabs.io/)
-- `pydub` (for audio processing)
-- `anthropic` Python SDK
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/ai-builders-podcast.git
-   cd ai-builders-podcast
-   ```
-
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Update API keys in `config.py`:
-   ```python
-   CLAUDE_API_KEY = "your_claude_api_key"
-   ELEVENLABS_API_KEY = "your_elevenlabs_api_key"
-   ```
-
-4. Create the required directories:
-   ```bash
-   mkdir -p episodes audio-files assets/intros assets/outros
-   ```
-
-### Usage
-
-Generate a basic episode:
-```bash
-python main.py --topic "Future-Proofing Your Career with AI" --language english --type conversation --episode-number 1
+```
+Input → Router → Gatherer → Generator → Verifier → Synthesizer → Audio
+                    ↕              ↕           ↕
+              Knowledge Graph   KG Facts    FM Monitors
 ```
 
-Generate a Hindi episode:
-```bash
-python main.py --topic "AI Skills for 2025" --language hindi --type build --episode-number 2
-```
+- **Router**: Classifies inputs and routes to appropriate processors
+- **Gatherer**: Extracts content, populates Knowledge Graph with facts and provenance
+- **Generator**: Produces podcast scripts using KG-retrieved facts and persona system
+- **Verifier**: Two-layer quality assurance (FM monitors + quality checkers + LLM fact checking)
+- **Synthesizer**: Audio synthesis via VibeVoice, ElevenLabs, or gTTS fallback chain
 
-Generate Tamil episode with secondary languages:
-```bash
-python main.py --topic "AI in Healthcare" --language tamil --type conversation --episode-number 3 --secondary-languages english hindi
-```
-
-Generate transcript only (no audio):
-```bash
-python main.py --topic "AI Ethics" --language english --type conversation --episode-number 4 --transcript-only
-```
-
-### Using Custom Documents for Research
+## Quick Start
 
 ```bash
-# Use specific documents
-python main.py --topic "AI in Agriculture" --language english --documents docs/ai_agriculture_report.pdf docs/india_agritech.txt
+# Clone and install
+git clone https://github.com/revathi-prasad/ai-builders-podcast.git
+cd ai-builders-podcast
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 
-# Use all documents in a directory
-python main.py --topic "Future of Remote Work" --language hindi --documents-dir documents/research
+# Copy env template and add your API keys
+cp .env.example .env
+# Edit .env with your keys (at minimum: one LLM provider key)
 
-# Search recursively in subdirectories
-python main.py --topic "Healthcare AI" --language tamil --documents-dir documents --recursive
+# Generate a podcast
+python -m src --topic "Introduction to Machine Learning" --duration 5 --verbose
+
+# With specific options
+python -m src --topic "AI Safety" --language hindi --format conversation --audience beginner
 ```
 
-### Command-line Options
+### Running Tests
 
-```
-usage: main.py [-h] --topic TOPIC [--language {english,hindi,tamil}] [--type {introduction,build,conversation,interview,summary}]
-               [--cost-tier {economy,standard,premium}] [--duration DURATION] [--episode-number EPISODE_NUMBER] [--no-intro]
-               [--no-outro] [--transcript-only] [--use-transcript USE_TRANSCRIPT] [--reference-material REFERENCE_MATERIAL]
-               [--secondary-languages {english,hindi,tamil} [{english,hindi,tamil} ...]] [--output-dir OUTPUT_DIR]
-
-AI Builders Podcast System
-
-options:
-  -h, --help            show this help message and exit
-  --topic TOPIC         Episode topic
-  --language {english,hindi,tamil}
-                        Primary language for the episode
-  --type {introduction,build,conversation,interview,summary}
-                        Episode type
-  --cost-tier {economy,standard,premium}
-                        Cost tier for generation
-  --duration DURATION   Target duration in minutes
-  --episode-number EPISODE_NUMBER
-                        Episode number
-  --no-intro            Skip standard intro
-  --no-outro            Skip standard outro
-  --transcript-only     Generate only transcript without audio
-  --use-transcript USE_TRANSCRIPT
-                        Use a pre-defined transcript file instead of generating new content
-  --reference-material REFERENCE_MATERIAL
-                        Path to reference material for content enrichment
-  --documents DOCUMENTS [DOCUMENTS ...]
-                        Paths to custom documents for research
-  --documents-dir DOCUMENTS_DIR
-                        Directory containing documents for research
-  --recursive           Recursively search for documents in subdirectories
-  --secondary-languages {english,hindi,tamil} [{english,hindi,tamil} ...]
-                        Secondary languages for transformation
-  --output-dir OUTPUT_DIR
-                        Output directory for episodes
+```bash
+pytest tests/ -v --tb=short
 ```
 
-## Podcast Titles by Language
+### API Server
 
-- **English**: "Future Proof with AI"
-- **Hindi**: "नई तकनीक, नए अवसर" (New Technology, New Opportunities)
-- **Tamil**: "புதிய மனிதருடன் ஆழ்நோக்கம்" (Deep Dive with the New Human)
+```bash
+uvicorn src.api.main:app --host 0.0.0.0 --port 8000
+# Health check: http://localhost:8000/health
+# API docs: http://localhost:8000/docs
+```
 
-## Customization
+## Project Structure
 
-### Adding New Languages
+```
+src/
+├── agents/
+│   ├── graph.py              # Central LangGraph workflow (router→gatherer→generator→verifier→synthesizer)
+│   ├── generator.py          # Script generation with persona system
+│   ├── router.py             # Input classification and routing
+│   └── synthesizer.py        # Audio synthesis (VibeVoice/ElevenLabs/gTTS)
+├── api/
+│   ├── main.py               # FastAPI server with SQLite persistence
+│   ├── database.py           # SQLite persistence layer
+│   └── runner.py             # Background job runner with real progress tracking
+├── graph/
+│   ├── manager.py            # Knowledge Graph CRUD (Kuzu)
+│   └── schema.py             # KG schema (Topic, Fact, Source, Segment entities)
+├── llm/
+│   ├── factory.py            # Multi-provider LLM factory
+│   ├── config.py             # Provider definitions (Anthropic, Groq, Together, Fireworks, Ollama, OpenAI)
+│   └── providers/            # Provider implementations
+├── rl/
+│   ├── reward_model.py       # Engagement + quality reward models
+│   └── trainer.py            # DPO/GRPO/SFT trainers (TRL-based with fallback)
+├── tools/
+│   ├── web_search.py         # Serper/Tavily web search
+│   ├── pdf_processor.py      # PDF text extraction
+│   ├── url_processor.py      # URL content fetching
+│   └── audio_processor.py    # Audio transcription
+├── verification/
+│   ├── fm_monitors.py        # MAST failure mode monitors (Layer 1)
+│   └── quality_checkers.py   # Quality checkers + LLM fact checker (Layer 2)
+├── cli.py                    # CLI entry point
+└── __main__.py               # python -m src support
 
-1. Update the `Language` enum in `config.py`
-2. Add voice configurations in `VOICE_LIBRARY`
-3. Add transformation guidelines in `TRANSFORMATION_GUIDELINES`
-4. Add regional examples in `REGIONAL_EXAMPLES`
-5. Add standard intros and outros in `STANDARD_INTROS` and `STANDARD_OUTROS`
-6. Add cultural contexts in `CULTURAL_CONTEXTS`
+tests/                        # pytest suite (8 test files)
+frontend/                     # React + TypeScript web UI
+archive/v1/                   # Archived v1 pipeline code
+```
 
-### Adding New Episode Types
+## Tech Stack
 
-1. Update the `EpisodeType` enum in `config.py`
-2. Add episode length configuration in `EPISODE_LENGTH`
-3. Add episode planning method in `CulturalPersonalityEngine`
-4. Add episode generation method in `ConstellationOrchestrator`
+| Component | Technology |
+|-----------|------------|
+| Agent Framework | LangGraph (StateGraph) |
+| Knowledge Graph | Kuzu (embedded, MIT license) |
+| LLM | Multi-provider: Anthropic, Groq, Together, Fireworks, Ollama, OpenAI |
+| TTS | VibeVoice → ElevenLabs → gTTS (fallback chain) |
+| RL Training | TRL (DPO, GRPO, SFT) with LoRA/PEFT |
+| API | FastAPI + SQLite (aiosqlite) |
+| Frontend | React + TypeScript + Tailwind |
+| Web Search | Serper (primary), Tavily (fallback) |
 
-## Research and Citation Support
+## Research Focus
 
-The system includes a research engine that:
+This project is a research testbed for:
 
-1. Gathers information from web searches (simulated in the current version)
-2. Synthesizes findings into a structured research result
-3. Creates citations in various formats (APA, MLA)
-4. Generates GitHub resources for research references
+1. **Multi-Agent Coordination** — Handoff protocols, information preservation across agent boundaries
+2. **RL for Creative Content** — FM-augmented rewards, credit assignment, engagement-based reward models
+3. **Cultural Adaptation** — Beyond translation: persona-based cultural context for Hindi, Tamil, English
+4. **Verification Systems** — Two-layer quality assurance combining heuristic monitors with LLM fact checking
+
+See [docs/RESEARCH_ROADMAP.md](docs/RESEARCH_ROADMAP.md) for open research directions (17 research questions with code pointers).
+
+## Datasets
+
+Training datasets (DPO preference pairs, evaluation data, engagement feedback) will be published on HuggingFace at **[TBD]**.
+
+## Supported Languages
+
+- English
+- Hindi (हिंदी)
+- Tamil (தமிழ்)
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [ARCHITECTURE_v2.md](docs/ARCHITECTURE_v2.md) | Full system architecture, components, tech stack |
+| [RESEARCH_ROADMAP.md](docs/RESEARCH_ROADMAP.md) | Open research directions with code pointers |
+
+## Related Work
+
+- [AgentFlow](https://arxiv.org/abs/2510.05592) — In-the-Flow RL for multi-agent systems
+- [MAST](https://arxiv.org/abs/2503.13657) — Multi-agent failure taxonomy
+- [Graphiti](https://github.com/getzep/graphiti) — Temporal knowledge graphs for agents
+- [DPO](https://arxiv.org/abs/2305.18290) — Direct Preference Optimization
+- [GRPO](https://arxiv.org/abs/2402.03300) — Group Relative Policy Optimization
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT License — see LICENSE file for details.
+
+## Author
+
+Revathi Prasad — [GitHub](https://github.com/revathi-prasad)

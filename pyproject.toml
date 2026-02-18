@@ -1,0 +1,20 @@
+[project]
+name = "ai-podcast-generator"
+version = "2.0.0"
+description = "Multi-agent AI podcast generator with RL training"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = [
+    "slow: marks tests that take a long time (deselect with '-m \"not slow\"')",
+    "integration: marks tests requiring external services (API keys, network)"
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
