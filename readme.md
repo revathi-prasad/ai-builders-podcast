@@ -3,7 +3,12 @@
 > A multi-agent system for generating culturally-adapted podcasts from multi-modal inputs
 > **Status:** v2 pipeline implemented, research experiments in progress
 
-## Overview
+Spotify Links to the Podcast: 
+1. **English:** https://open.spotify.com/show/5EL3E8QlPYtp5R7Nm351Tv?si=a21157be054e49f1
+2. **Hindi:** https://open.spotify.com/show/1pPhCIW4pbH9xQXtAvhPSD?si=8ac098fafcd54d37
+3. **Tamil:** https://open.spotify.com/show/52q6VK5e7Yocu9J6O2wWHP?si=1fa2bd1cc743405c
+
+## Core Features
 
 Transforms documents, audio, video, URLs, and topics into podcast scripts and audio using a LangGraph multi-agent pipeline with Knowledge Graph memory, two-layer verification, and reinforcement learning capabilities.
 
