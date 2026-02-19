@@ -56,6 +56,7 @@ faster-whisper>=1.0.0
 # Audio manipulation
 ffmpeg-python>=0.2.0
 soundfile>=0.12.0
+audioop-lts>=0.2.1; python_version>='3.13'  # pydub needs audioop, removed in 3.13
 
 # TTS - VibeVoice (installed separately, requires GPU)
 # See: https://github.com/microsoft/VibeVoice
