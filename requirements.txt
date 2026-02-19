@@ -89,6 +89,7 @@ python-multipart>=0.0.9  # File uploads
 
 # Data handling
 pydantic>=2.9.0
+pandas>=2.0.0
 python-dotenv>=1.0.0
 
 # Async utilities

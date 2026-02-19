@@ -594,9 +594,9 @@ def verifier_node(state: PodcastState) -> Dict[str, Any]:
         fm_signals = [
             {
                 "monitor": r.monitor_name,
-                "signal": r.reward_signal,
-                "triggered": r.triggered,
-                "details": r.explanation
+                "signal": r.signal.value,
+                "confidence": r.confidence,
+                "details": r.details
             }
             for r in fm_results
         ]

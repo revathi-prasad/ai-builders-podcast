@@ -27,9 +27,12 @@ Usage:
 
 import os
 import uuid
+import logging
 from typing import Optional, List, Dict, Any
 from datetime import datetime
 from contextlib import contextmanager
+
+logger = logging.getLogger(__name__)
 
 from .schema import (
     SCHEMA_DDL, QUERIES,
@@ -79,24 +82,33 @@ class KnowledgeGraphManager:
         """
         self._ensure_kuzu()
 
-        # Create directory if needed
-        os.makedirs(self.db_path, exist_ok=True)
+        # Create parent directory if needed (Kuzu creates the db directory itself)
+        parent = os.path.dirname(self.db_path)
+        if parent:
+            os.makedirs(parent, exist_ok=True)
 
         # Open database
         self._db = self._kuzu.Database(self.db_path)
         self._conn = self._kuzu.Connection(self._db)
 
         # Create schema
-        # Split DDL into individual statements
-        statements = [s.strip() for s in SCHEMA_DDL.split(';') if s.strip()]
+        # Split DDL into individual statements and strip comments
+        statements = []
+        for s in SCHEMA_DDL.split(';'):
+            # Remove comment-only lines and strip
+            lines = [l for l in s.strip().splitlines() if not l.strip().startswith('--')]
+            clean = '\n'.join(lines).strip()
+            if clean:
+                statements.append(clean)
+
         for stmt in statements:
-            if stmt and not stmt.startswith('--'):
-                try:
-                    self._conn.execute(stmt)
-                except Exception as e:
-                    # Schema already exists - that's fine
-                    if "already exists" not in str(e).lower():
-                        raise
+            try:
+                self._conn.execute(stmt)
+            except Exception as e:
+                # Schema already exists - that's fine
+                if "already exists" not in str(e).lower():
+                    logger.warning(f"Schema DDL failed: {e}\n  Statement: {stmt[:80]}...")
+                    raise
 
     def close(self) -> None:
         """Close the database connection"""

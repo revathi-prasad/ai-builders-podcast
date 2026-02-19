@@ -226,7 +226,7 @@ class ScriptGenerator:
         """
         Generate a podcast script (sync wrapper for async method).
         """
-        return asyncio.get_event_loop().run_until_complete(
+        return asyncio.run(
             self.generate_script_async(
                 facts=facts,
                 topics=topics,
@@ -353,7 +353,7 @@ Follow the exact format specified in the prompt."""
 
     def _call_claude(self, prompt: str) -> str:
         """Legacy sync method - redirects to async"""
-        return asyncio.get_event_loop().run_until_complete(
+        return asyncio.run(
             self._call_llm_async(prompt)
         )
 
@@ -469,7 +469,7 @@ Revised script:"""
         issues: List[str]
     ) -> List[DialogueSegment]:
         """Revise script (sync wrapper)"""
-        return asyncio.get_event_loop().run_until_complete(
+        return asyncio.run(
             self.revise_script_async(segments, feedback, issues)
         )
 
