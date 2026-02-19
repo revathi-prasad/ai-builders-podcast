@@ -40,7 +40,7 @@ ENV/
 
 # API keys and secrets (important for security!)
 *.env
-*config.py
+/config.py
 # If you have a config file with API keys, consider using environment variables instead
 
 # Database
@@ -49,3 +49,26 @@ ENV/
 
 # Logs
 *.log
+
+# Large binaries
+Miniforge3-MacOSX-arm64.sh
+
+# Internal docs (not open-sourced)
+NEXT_STEPS.md
+docs/OPEN_QUESTIONS.md
+docs/RESEARCH_QUESTIONS.md
+docs/SELF_EVALUATION_GUIDE.md
+docs/TOOL_ANALYSIS.md
+docs/LOCAL_TRAINING_GUIDE.md
+docs/*.pdf
+
+# Internal scripts and data
+scripts/
+archives/
+data/
+notebooks/
+models/
+output/
+
+# Claude Code workspace
+.claude/

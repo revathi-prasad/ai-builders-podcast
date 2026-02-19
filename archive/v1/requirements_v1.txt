@@ -1,0 +1,39 @@
+# Core
+anthropic>=0.40.0
+openai>=1.0.0  # For Together.ai, Groq, Fireworks (OpenAI-compatible APIs)
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+
+# API
+fastapi>=0.109.0
+uvicorn>=0.27.0
+websockets>=12.0
+
+# LangGraph
+langgraph>=0.2.0
+langchain>=0.3.0
+
+# Content Processing
+pymupdf4llm>=0.0.17  # PDF extraction
+trafilatura>=1.6.0   # URL scraping
+faster-whisper>=1.0.0  # Audio transcription (requires CUDA for best performance)
+youtube-transcript-api>=0.6.0  # YouTube captions
+
+# Audio
+pydub>=0.25.1
+gtts>=2.5.0  # Fallback TTS
+# vibevoice  # Install separately: pip install vibevoice (requires GPU)
+
+# Knowledge Graph
+kuzu>=0.6.0  # Graph database
+
+# Utilities
+requests>=2.31.0
+aiofiles>=23.0.0
+tenacity>=8.2.0  # Retry logic
+
+# Development
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
+black>=24.0.0
+ruff>=0.2.0

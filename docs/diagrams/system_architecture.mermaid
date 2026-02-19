@@ -1,0 +1,81 @@
+%% AI Podcast Generator - Multi-Agent Architecture v2.0
+%% Render at: https://mermaid.live or in any Mermaid-compatible viewer
+
+flowchart TB
+    subgraph INPUT["INPUT LAYER"]
+        UI[User Interface]
+        API[API Endpoint]
+    end
+
+    subgraph ROUTER["INPUT ROUTER"]
+        MR[Modality Router]
+        CR[Copyright Checker]
+        IR[Intent Parser]
+    end
+
+    subgraph PROCESSORS["MODALITY PROCESSORS"]
+        DP[Document Processor<br/>PDF, DOCX, TXT]
+        AP[Audio Processor<br/>Whisper Transcription]
+        VP[Video Processor<br/>Frame + Audio Extract]
+        WR[Web Researcher<br/>Topic → Search]
+        UP[URL Processor<br/>Article Extraction]
+    end
+
+    subgraph KG["KNOWLEDGE GRAPH (Graphiti-style)"]
+        EG[Entity Graph<br/>Topics, Facts, Sources]
+        TG[Temporal Graph<br/>Validity, Timestamps]
+        PG[Provenance Graph<br/>Source Attribution]
+    end
+
+    subgraph SYNTHESIS["CONTENT SYNTHESIS"]
+        CS[Content Synthesizer<br/>Merge Multi-Modal]
+        SW[Script Writer<br/>Persona, Format]
+        CA[Cultural Adapter<br/>Language + Culture]
+    end
+
+    subgraph VERIFICATION["VERIFICATION MAS"]
+        subgraph L1["LAYER 1: Message-Level FM Monitors"]
+            FM21[FM-2.1<br/>Context Reset]
+            FM24[FM-2.4<br/>Info Withholding]
+            FM26[FM-2.6<br/>Reason-Action]
+        end
+        subgraph L2["LAYER 2: Output Checkers"]
+            FC[Fact Checker]
+            CC[Cultural Checker]
+            FMC[Format Checker]
+            FLC[Flow Checker]
+        end
+        RS[RL Reward Shaper]
+    end
+
+    subgraph OUTPUT["OUTPUT LAYER"]
+        VS[Voice Synthesizer<br/>VibeVoice / Local TTS]
+        AM[Audio Mixer<br/>Music, Effects]
+        TR[Transcript Generator]
+    end
+
+    UI --> MR
+    API --> MR
+    MR --> CR
+    CR --> IR
+    IR --> DP & AP & VP & WR & UP
+
+    DP & AP & VP & WR & UP --> KG
+    KG --> CS
+    CS --> SW
+    SW --> CA
+
+    L1 -.->|observes| CS & SW & CA
+    L1 --> RS
+
+    CA --> L2
+    L2 -->|accept| VS
+    L2 -->|revise| SW
+    L2 --> RS
+
+    VS --> AM
+    AM --> TR
+
+    style KG fill:#e1f5fe
+    style VERIFICATION fill:#fff3e0
+    style RS fill:#c8e6c9
