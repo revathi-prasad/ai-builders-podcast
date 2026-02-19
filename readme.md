@@ -52,7 +52,7 @@ pytest tests/ -v --tb=short
 
 ```bash
 uvicorn src.api.main:app --host 0.0.0.0 --port 8000
-# Health check: http://localhost:8000/health
+# Health check: http://localhost:8000/api/health
 # API docs: http://localhost:8000/docs
 ```
 
