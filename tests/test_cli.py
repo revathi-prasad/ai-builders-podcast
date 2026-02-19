@@ -45,7 +45,7 @@ class TestCLI:
             '--language', 'english', '--duration', '5',
             '--format', 'conversation', '--audience', 'beginner'
         ]):
-            with patch('src.cli.generate_podcast_sync') as mock_gen:
+            with patch('src.agents.graph.generate_podcast_sync') as mock_gen:
                 mock_gen.return_value = {
                     "processing_status": "completed",
                     "final_script": "test",

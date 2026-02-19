@@ -81,7 +81,7 @@ from src.agents.synthesizer import AudioSynthesisAgent, VibeVoiceSynthesizer, Di
 from src.tools.pdf_processor import PDFProcessor
 from src.tools.audio_processor import AudioProcessor
 from src.tools.url_processor import URLProcessor
-from src.tools.text_processor import TopicProcessor
+from src.tools.text_processor import TextProcessor as TopicProcessor
 from src.tools.web_search import WebSearchTool
 
 # Import verification
@@ -280,8 +280,8 @@ def gatherer_node(state: PodcastState) -> Dict[str, Any]:
                 logger.info(f"  Extracted {len(result.text)} chars from URL")
 
             elif content_type == "topic":
-                result = topic_processor.process(item.source)
-                extracted_texts.append(result.text)
+                topic_info = topic_processor.process_topic(item.source)
+                extracted_texts.append(item.source)
                 source_type = "user_input"
                 logger.info(f"  Processed topic: {item.source[:50]}...")
 
