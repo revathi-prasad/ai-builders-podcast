@@ -54,17 +54,6 @@ A **multi-agent podcast generation system** that transforms multi-modal inputs (
 
 ## 2. Strategic Context
 
-### Target Research Programs
-
-- **SPAR** (Summer/Fall 2026): AI safety research, multi-agent coordination
-- **FIG**: AI policy and safety fellowship
-- **Apart Research**: Monthly sprints, meritocratic entry
-- **MATS**: Autumn 2026 applications
-
-### Career Trajectory
-
-Building toward: Anthropic / RunwayML / OpenAI AI Research Scientist/Engineer roles
-
 ### Why This Project
 
 1. Natural extension of existing ai-builders-podcast codebase
